@@ -10,4 +10,4 @@ After installing this:
 ![image](https://user-images.githubusercontent.com/4566555/206840891-a0065b0b-99ad-40d4-accf-fa3f440d4a2f.png)
 
 ## Install
-Click [this](https://github.com/horihiro/replaceAzurePortalFavicon/raw/main/replaceAzurePortalFavicon.user.js) after installing the browser for userscript execution (ex. [Tampermonkey](https://www.tampermonkey.net/)).
+Click [this](https://github.com/horihiro/replaceAzurePortalFavicon/raw/main/replaceAzurePortalFavicon.user.js) after installing the browser extention for userscript execution (ex. [Tampermonkey](https://www.tampermonkey.net/)).
