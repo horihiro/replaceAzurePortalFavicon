@@ -19,6 +19,8 @@
     const head = faviconOrig.parentNode;
     faviconAzureResource.setAttribute('rel', 'shortcut icon');
     faviconAzureResource.setAttribute('type', 'image/svg+xml');
+    head.removeChild(document.querySelectorAll('*[rel="icon"]')[0]);
+
   
     const updateFavicon = (faviconLink) => {
       const links = head.querySelectorAll('link[rel="shortcut icon"]');
