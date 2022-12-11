@@ -68,11 +68,12 @@
     if (mutations.filter((mutation) => mutation.addedNodes.length > 0 && [...mutation.addedNodes].filter((addedNode) => addedNode.nodeName.toLowerCase() === 'link' && addedNode.getAttribute('rel') === 'icon').length > 0).length > 0) return;
     const mainIconSvgs = document.querySelectorAll('section:last-of-type div.azc-listView-group:first-child li.fxs-portal-focus:first-child svg');
     const listIconSvgs = [...document.querySelectorAll('section:last-of-type div.fxc-gc-row-content>div:nth-child(2) svg')];
-    if ((mainIconSvgs.length === 0 || mainIconSvgs[0] === lastFavicon) && (listIconSvgs.length === 0 || !listIconSvgs.every(svg => listIconSvgs[0].outerHTML === svg.outerHTML))) {
+    const noResIconSvgs = document.querySelectorAll('section:last-of-type div.ext-hubs-artbrowse-empty div.msportalfx-svg-disabled svg');
+    if ((mainIconSvgs.length === 0 || mainIconSvgs[0] === lastFavicon) && (listIconSvgs.length === 0 || !listIconSvgs.every(svg => listIconSvgs[0].outerHTML === svg.outerHTML)) && (noResIconSvgs.length === 0)) {
       mainIconSvgs.length === 0 && updateFavicon(faviconOrig);
       return;
     }
-    lastFavicon = mainIconSvgs[0] || listIconSvgs[0];
+    lastFavicon = mainIconSvgs[0] || listIconSvgs[0] || noResIconSvgs[0];
 
     const svgData = getSvgData(lastFavicon);
     faviconAzureResource.href = `data:image/svg+xml,${encodeURIComponent(svgData)}`;
