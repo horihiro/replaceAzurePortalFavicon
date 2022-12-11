@@ -63,20 +63,31 @@
 
   const scriptname = GM_info.script.name;
 
-  let lastFavicon = null;
+  let lastFavicon = faviconOrig;
   const mainObserver = new MutationObserver(async (mutations) => {
     if (mutations.filter((mutation) => mutation.addedNodes.length > 0 && [...mutation.addedNodes].filter((addedNode) => addedNode.nodeName.toLowerCase() === 'link' && addedNode.getAttribute('rel') === 'icon').length > 0).length > 0) return;
-    const mainIconSvgs = document.querySelectorAll('section:last-of-type div.azc-listView-group:first-child li.fxs-portal-focus:first-child svg');
+    const mainIconContainers =
+          document.querySelectorAll(
+            `${
+              document.querySelectorAll('div.fxs-sidebar div.azc-listView-group:first-child ').length > 0
+              ? 'div.fxs-sidebar'
+              : 'section:last-of-type'
+            } div.azc-listView-group:first-child li.fxs-portal-focus:first-child`
+          );
     const listIconSvgs = [...document.querySelectorAll('section:last-of-type div.fxc-gc-row-content>div:nth-child(2) svg')];
     const noResIconSvgs = document.querySelectorAll('section:last-of-type div.ext-hubs-artbrowse-empty div.msportalfx-svg-disabled svg');
-    if ((mainIconSvgs.length === 0 || mainIconSvgs[0] === lastFavicon) && (listIconSvgs.length === 0 || !listIconSvgs.every(svg => listIconSvgs[0].outerHTML === svg.outerHTML)) && (noResIconSvgs.length === 0)) {
-      mainIconSvgs.length === 0 && updateFavicon(faviconOrig);
+    if (mainIconContainers.length === 0 && (listIconSvgs.length === 0 || !listIconSvgs.every(svg => listIconSvgs[0].outerHTML === svg.outerHTML)) && (noResIconSvgs.length === 0)) {
+      updateFavicon(faviconOrig);
       return;
     }
-    lastFavicon = mainIconSvgs[0] || listIconSvgs[0] || noResIconSvgs[0];
+    const mainIcon = mainIconContainers.length > 0 ? mainIconContainers[0].querySelectorAll('svg,img')[0] : null;
+    if ((!mainIcon && !listIconSvgs[0] && !noResIconSvgs[0] )|| mainIcon === lastFavicon) {
+      !mainIcon && updateFavicon(faviconOrig);
+      return;
+    }
+    lastFavicon = mainIcon || listIconSvgs[0] || noResIconSvgs[0];
 
-    const svgData = getSvgData(lastFavicon);
-    faviconAzureResource.href = `data:image/svg+xml,${encodeURIComponent(svgData)}`;
+    faviconAzureResource.href = lastFavicon.src || `data:image/svg+xml,${encodeURIComponent(getSvgData(lastFavicon))}`;
     updateFavicon(faviconAzureResource);
   });
   mainObserver.observe(document, { childList: true, subtree: true });
