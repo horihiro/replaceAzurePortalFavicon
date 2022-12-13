@@ -14,9 +14,15 @@
 (async function() {
   'use strict';
 
-  const faviconOrig = document.querySelectorAll('link[rel="icon"]')[0];
+  let faviconOrig = document.querySelectorAll('link[rel="icon"]')[0];
+  if (!faviconOrig) {
+    faviconOrig = document.createElement('link');
+    faviconOrig.setAttribute('rel', 'icon');
+    faviconOrig.setAttribute('type', 'image/x-icon');
+    faviconOrig.setAttribute('href', '/Content/favicon.ico');
+  }
   const faviconAzureResource = document.createElement('link');
-  const head = faviconOrig.parentNode;
+  const head = document.head;
   faviconAzureResource.setAttribute('rel', 'icon');
   faviconAzureResource.setAttribute('type', 'image/svg+xml');
   [...head.querySelectorAll('link[rel*="shortcut"][rel*="icon"]')].forEach((icon) => {
